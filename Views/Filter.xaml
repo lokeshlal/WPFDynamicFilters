@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="WPFDynamicFilters.Filter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFDynamicFilters"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" 
+             >
+    <UserControl.Resources>
+        <DataTemplate x:Key="TStringTemplate">
+            <StackPanel FlowDirection="LeftToRight">
+                <TextBlock Text="{Binding FilterKey}" />
+                <TextBox x:Name="TxtFieldValue" 
+                     Text="{Binding FilterValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
+                     RenderTransformOrigin="-9.3,0.5" Width="200" FontSize="16" TextAlignment="Left" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="TIntegerTemplate">
+            <StackPanel FlowDirection="LeftToRight">
+                <TextBlock Text="{Binding FilterKey}" />
+                <TextBox x:Name="IntFieldValue" 
+                     Text="{Binding FilterValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   
+                     RenderTransformOrigin="-9.3,0.5" Width="200" FontSize="16" TextAlignment="Left" VerticalAlignment="Center"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="TDropDownTemplate">
+            <StackPanel FlowDirection="LeftToRight">
+                <TextBlock Text="{Binding FilterKey}" />
+                <ComboBox 
+                SelectedItem="{Binding FilterValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedIndex="{Binding FilterValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding ObjectDropDownList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      DisplayMemberPath="Name"
+                             RenderTransformOrigin="-9.3,0.5" Width="200" FontSize="16" />
+            </StackPanel>
+        </DataTemplate>
+        <local:FilterTemplateSelector x:Key="FilterTemplateSelector" 
+                StringTemplate="{StaticResource TStringTemplate}"
+                IntegerTemplate="{StaticResource TIntegerTemplate}"
+                DropDownTemplate="{StaticResource TDropDownTemplate}"
+                />
+    </UserControl.Resources>
+    <Grid>
+        <ItemsControl ItemsSource="{Binding FilterDetails}" >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="3" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                        <ContentControl 
+                            Content="{Binding}" 
+                            HorizontalAlignment="Left" 
+                            ContentTemplateSelector="{StaticResource FilterTemplateSelector}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>
