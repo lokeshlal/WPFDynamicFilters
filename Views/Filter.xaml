@@ -6,8 +6,10 @@
              xmlns:local="clr-namespace:WPFDynamicFilters"
              mc:Ignorable="d" 
              d:DesignHeight="40" 
+             xmlns:converters="clr-namespace:WPFDynamicFilters.Converter"
              >
     <UserControl.Resources>
+        <converters:ComboBoxListOfStringConverter x:Key="convComboboxList"/>
         <DataTemplate x:Key="TStringTemplate">
             <StackPanel FlowDirection="LeftToRight">
                 <TextBlock Text="{Binding FilterKey}" />
@@ -42,18 +44,46 @@
                 />
     </UserControl.Resources>
     <Grid>
-        <ItemsControl ItemsSource="{Binding FilterDetails}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel FlowDirection="LeftToRight" Grid.Row="0" Grid.Column="0" Height="55" >
+            <TextBlock Text="Select Filter" Height="25"></TextBlock>
+            <ComboBox x:Name="dropdownButton" ItemsSource="{Binding FilterNames}" SelectedItem="{Binding SelectedFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                IsSynchronizedWithCurrentItem="True" 
+                Text="Select Option" Width="180" Height="25">
+            </ComboBox>
+        </StackPanel>
+        <!--<Menu Width="100" Height="35" Grid.Row="1" Grid.Column="1" >
+            <MenuItem ItemsSource="{Binding FilterNames}" Header="Select Filters" ></MenuItem>
+        </Menu>-->
+        <ItemsControl ItemsSource="{Binding SelectedFilters}" HorizontalAlignment="Stretch" Grid.Row="2" Grid.Column="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="3" />
+                    <UniformGrid Columns="1">
+                    </UniformGrid>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
                         <ContentControl 
                             Content="{Binding}" 
                             HorizontalAlignment="Left" 
-                            ContentTemplateSelector="{StaticResource FilterTemplateSelector}" />
+                            ContentTemplateSelector="{StaticResource FilterTemplateSelector}" Grid.Column="0" />
+                        <Button Content="x" 
+                                Command="{Binding DataContext.RemoveFilterCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" 
+                                CommandParameter="{Binding FilterKey}"  Grid.Column="1" Width="20" />
+                    </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

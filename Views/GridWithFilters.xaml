@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFDynamicFilters"
         mc:Ignorable="d"
-        Title="gridwithfilters" Height="481.239" Width="858.171">
+        Title="gridwithfilters" Height="587.239" Width="858.171">
     <Grid>
-        <Grid HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" x:Name="FilterGrid" Height="209" Width="830">
+        <Grid Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" x:Name="FilterGrid">
             <Border BorderThickness="1" BorderBrush="Gold"/>
             <local:Filter DataContext="{Binding FilterControlViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" />
         </Grid>
-        <DataGrid x:Name="DataGrid" ItemsSource="{Binding GridSource}" HorizontalAlignment="Left" Margin="10,294,0,0" VerticalAlignment="Top" Height="146" Width="830"/>
-        <Button x:Name="button" Content="Check Filters" HorizontalAlignment="Left" Margin="10,245,0,0" VerticalAlignment="Top" Width="110" Command="{Binding CheckFiltersCommand}"/>
+        <DataGrid x:Name="DataGrid" ItemsSource="{Binding GridSource}" HorizontalAlignment="Left" Margin="10,371,0,0" VerticalAlignment="Top" Height="146" Width="830"/>
+        <Button x:Name="button" Content="Check Filters" HorizontalAlignment="Left" Margin="10,322,0,0" VerticalAlignment="Top" Width="110" Command="{Binding CheckFiltersCommand}"/>
     </Grid>
 </Window>

@@ -23,20 +23,22 @@ namespace WPFDynamicFilters
             FilterControlViewModel = new FilterControlViewModel();
             FilterControlViewModel.FilterDetails = new List<FilterAttribute>();
 
+            List<FilterAttribute> filterDetails = new List<FilterAttribute>();
             foreach (var property in typeof(GridModel).GetProperties())
             {
                 if (property.GetCustomAttributes(true).Where(attr => attr.GetType() == typeof(FilterAttribute)).Any())
                 {
                     var attribute = (FilterAttribute)property.GetCustomAttributes(true).Where(attr => attr.GetType() == typeof(FilterAttribute)).First();
-                    FilterControlViewModel.FilterDetails.Add(attribute);
+                    filterDetails.Add(attribute);
                 }
             }
+            FilterControlViewModel.FilterDetails = filterDetails;
         }
 
         private void GetFilters()
         {
             FilterCollection = new Dictionary<string, object>();
-            foreach (var filter in FilterControlViewModel.FilterDetails)
+            foreach (var filter in FilterControlViewModel.SelectedFilters)
             {
                 if (filter.IsDropDown)
                 {
@@ -71,6 +73,28 @@ namespace WPFDynamicFilters
         public void Execute(object parameter)
         {
             _action();
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public event EventHandler CanExecuteChanged;
+    }
+
+    public class DelegateCommand<T> : ICommand
+    {
+        private readonly Action<T> _action;
+
+        public DelegateCommand(Action<T> action)
+        {
+            _action = action;
+        }
+
+        public void Execute(object parameter)
+        {
+            _action((T)parameter);
         }
 
         public bool CanExecute(object parameter)

@@ -11,5 +11,10 @@ namespace WPFDynamicFilters
         {
             InitializeComponent();
         }
+
+        private void dropdownButton_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
